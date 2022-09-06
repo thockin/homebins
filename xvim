@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Need this to let vim_server run in background
+unset GNOME_TERMINAL_SCREEN
+
+exec gnome-terminal \
+    --wait \
+    -t "vim $@" \
+    --hide-menubar \
+    -- \
+    vim "$@"

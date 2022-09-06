@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "Starting vim server in background"
+setsid \
+~/bin/_vim_server.py -e ~/bin/xvim > /tmp/vim_server.log 2>&1 &
