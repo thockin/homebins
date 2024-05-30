@@ -40,12 +40,11 @@ class Handler(BaseHTTPRequestHandler):
 			self.send_response(200)
 			self.send_header('Content-Type', 'text/plain; charset=utf-8')
 			self.end_headers()
-			self.wfile.write('edit-server is running.\n')
+			self.wfile.write(str.encode('edit-server is running.\n'))
 			return
 		self.send_error(404, "GET Not Found: %s" % self.path)
 
 	def do_POST(self):
-		print("TIM")
 		global processes
 		try:
 			(content, params) = cgi.parse_header(self.headers.get('content-type'))
