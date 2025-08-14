@@ -1,14 +1,20 @@
 #!/bin/bash
 
-date >> /tmp/thockin-usb.log
+# NOTE: systemd somehow still captures the output of this script, so use
+# journalctl to see the output.
+exec >> /tmp/thockin-usb.log 2>&1
 chown thockin /tmp/thockin-usb.log
+
+echo "-------------------------------"
+date
+echo "$0 $@"
 
 export DISPLAY=:1
 
 function set_mouse_buttons() {
   # Change the thumb button (8) to be middle-click (2)
   local id
-  xinput list | grep "Logitech MX Vertical.*pointer" \
+  xinput list | grep "MX Vertical.*pointer" \
       | awk -F'	' '{print $2}' \
       | sed 's/id=//' \
       | while read -r id; do 
@@ -26,7 +32,7 @@ function set_mouse_buttons() {
 #  ID_INPUT_KEY=1
 #  KEYBOARD_KEY_90004=btn_middle
 #  KEYBOARD_KEY_90005=btn_middle
-set_mouse_buttons >> /tmp/thockin-usb.log 2>&1
+set_mouse_buttons
 
 function set_webcam_zoom() {
     local devs=$(v4l2-ctl --list-devices -z "HD Pro Webcam C920" | grep /dev/)
@@ -37,4 +43,4 @@ function set_webcam_zoom() {
       v4l2-ctl -d $d --set-ctrl=zoom_absolute=180 2>/dev/null
   done
 }
-set_webcam_zoom >> /tmp/thockin-usb.log 2>&1
+set_webcam_zoom
