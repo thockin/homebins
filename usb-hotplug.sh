@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# Install the following as /etc/udev/rules.d/99-thockin.rules
+# ----
+# SUBSYSTEM=="hid", ACTION=="bind", RUN+="/home/thockin/bin/usb-hotplug.sh"
+
 
 # NOTE: systemd somehow still captures the output of this script, so use
 # journalctl to see the output.
