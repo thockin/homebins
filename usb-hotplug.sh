@@ -37,15 +37,25 @@ function set_mouse_buttons() {
 #  ID_INPUT_KEY=1
 #  KEYBOARD_KEY_90004=btn_middle
 #  KEYBOARD_KEY_90005=btn_middle
-set_mouse_buttons
+#
+#  Or by input-remapper-gtk
+#set_mouse_buttons
 
 function set_webcam_zoom() {
-    local devs=$(v4l2-ctl --list-devices -z "HD Pro Webcam C920" | grep /dev/)
+    set -x
+    local bus=$(v4l2-ctl --list-devices \
+        | grep "HD Pro Webcam C920" \
+        | awk '{print $NF}' \
+        | sed -e 's/[()]//g' -e 's/:$//')
+    if [ -z "$bus" ]; then
+      return 1
+    fi
+    local devs=$(v4l2-ctl --list-devices -z $bus | grep "/dev/")
     if [ -z "$devs" ]; then
-      return
+      return 1
     fi
     for d in $devs; do
-      v4l2-ctl -d $d --set-ctrl=zoom_absolute=180 2>/dev/null
+      v4l2-ctl -d $d --set-ctrl=zoom_absolute=200 2>/dev/null || true
   done
 }
 set_webcam_zoom

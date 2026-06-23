@@ -3,4 +3,6 @@
 sudo rmmod btusb
 sleep 1
 sudo modprobe btusb
+sleep 1
+usb-hotplug.sh
 
